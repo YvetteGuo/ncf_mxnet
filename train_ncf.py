@@ -30,7 +30,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 parser = argparse.ArgumentParser(description="Run matrix factorization with embedding",
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--path', nargs='?', default='./data/',
+parser.add_argument('--path', nargs='?', default='./mlperf/',
                     help='Input data path.')
 parser.add_argument('--dataset', nargs='?', default='ml-20m',
                     help='The dataset name.')
@@ -134,7 +134,7 @@ if __name__ == '__main__':
     evaluation_threads = 1
 
     # prepare dataset and iterators
-    data = Dataset(args.path + args.dataset)
+    data = Dataset(args.path)
     train, testRatings, testNegatives = data.trainMatrix, data.testRatings, data.testNegatives
     max_user, max_movies = train.shape
     print("Load data done. #user=%d, #item=%d, #train=%d, #test=%d" 
@@ -187,7 +187,7 @@ if __name__ == '__main__':
         train_iter.reset()
         # save model
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        model_path = os.path.join(dir_path, 'model', args.dataset)
+        model_path = os.path.join(dir_path, 'mlperf_model', args.dataset)
         if not os.path.exists(model_path):
             os.makedirs(model_path)
         mod.save_checkpoint(os.path.join(model_path, model_type), epoch)

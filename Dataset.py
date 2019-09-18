@@ -30,20 +30,20 @@ class Dataset(object):
         '''
         self.data_raw = pd.read_csv('./data/ml-20m/ratings.csv', sep=',', usecols=(0, 1, 2))
         self.unique_item = np.unique(self.data_raw['movieId'])-1
-        self.trainMatrix = self.load_rating_file_as_matrix(path + ".train.rating")
-        self.testRatings = self.load_rating_file_as_list(path + ".test.rating")
-        self.testNegatives = self.load_negative_file(path + ".test.negative")
+        self.trainMatrix = self.load_rating_file_as_matrix(path + "train-ratings.csv")
+        self.testRatings = self.load_rating_file_as_list(path + "test-ratings.csv")
+        self.testNegatives = self.load_negative_file(path + "test-negative.csv")
         assert len(self.testRatings) == len(self.testNegatives)
 
-    def load_rating_file_as_iter(self, filename):
-        user, item = [], []
-        with open(filename, "r") as f:
-            line = f.readline()
-            while line != None and line != "":
-                arr = line.split("\t")
-                user.append(int(arr[0]))
-                item.append(int(arr[1]))
-        return user, item
+    # def load_rating_file_as_iter(self, filename):
+    #     user, item = [], []
+    #     with open(filename, "r") as f:
+    #         line = f.readline()
+    #         while line != None and line != "":
+    #             arr = line.split("\t")
+    #             user.append(int(arr[0]))
+    #             item.append(int(arr[1]))
+    #     return user, item
 
     def load_rating_file_as_list(self, filename):
         ratingList = []
@@ -64,9 +64,13 @@ class Dataset(object):
             while line != None and line != "":
                 arr = line.split("\t")
                 negatives = []
-                for x in arr[1: ]:
+                for x in arr:
                     negatives.append(int(x))
                 negativeList.append(negatives)
+                # negatives = []
+                # for x in arr[1: ]:
+                #     negatives.append(int(x))
+                # negativeList.append(negatives)
                 line = f.readline()
         return negativeList
     
